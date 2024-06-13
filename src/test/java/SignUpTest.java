@@ -1,22 +1,24 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import data.Constants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.HeaderPage;
+import pages.SignupPage;
+import utils.Wait;
 
-public class SignUpTest extends BaseTest{
+public class SignUpTest extends BaseTest {
     @Test
-    public void createAccountTest() throws InterruptedException {
-        driver.findElement(By.xpath("(//a[@class='nav-link'])[8]")).click();
+    public void createAccountTest() {
+        HeaderPage headerPage = new HeaderPage(driver);
+        headerPage.clickSignUpLink();
         Wait.waitInSeconds(1);
-        driver.findElement(By.xpath("(//input[@type='text'])[3]")).sendKeys(Constants.generateRandomEmail());
-        driver.findElement(By.xpath("(//input[@type='password'])[1]")).sendKeys("onica3000");
-        driver.findElement(By.xpath("(//button[@type='button'])[6]")).click();
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.inputEmail();
+        signupPage.inputPassword();
+        signupPage.clickSignupButton();
         Wait.waitInSeconds(1);
         String actualMessage = driver.switchTo().alert().getText();
-        Assert.assertEquals(actualMessage, "Sign up successful.");
+        Assert.assertEquals(actualMessage, Constants.EXPECTED_MESSAGE);
         System.out.println(actualMessage);
         driver.switchTo().alert().accept();
-
     }
 }
